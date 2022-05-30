@@ -13,3 +13,7 @@ dependencies {
     runtimeOnly 'ch.qos.logback:logback-classic:1.2.11'
     runtimeOnly 'org.slf4j:log4j-over-slf4j:1.7.36'
 }
+
+tasks.withType(JavaCompile) {
+    options.compilerArgs += '-parameters'
+}
