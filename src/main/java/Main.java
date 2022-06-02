@@ -6,6 +6,10 @@ import com.linecorp.armeria.server.Server;
 import com.linecorp.armeria.server.ServerBuilder;
 import com.linecorp.armeria.server.docs.DocService;
 
+import dto.BlogPostConverter;
+import dto.BlogPostResponseConverter;
+import handler.BlogExceptionHandler;
+import handler.BlogPostAllInOneHandler;
 import service.BlogService;
 
 public final class Main {
@@ -37,10 +41,16 @@ public final class Main {
                           .exampleRequests(BlogService.class,
                                            "createBlogPost",
                                            "{\"title\":\"My first blog\", \"content\":\"Hello Mingble!\"}")
+                          .exampleRequests(BlogService.class,
+                                           "getPostList")
                           .build();
         return serverBuilder.http(port)
                             .service("/", ((ctx, req) -> HttpResponse.of("Hi Mingble!")))
-                            .annotatedService(new BlogService())
+                            .annotatedService(new BlogService(),
+                                              new BlogExceptionHandler(),
+                                              new BlogPostConverter(),
+                                              new BlogPostResponseConverter(),
+                                              new BlogPostAllInOneHandler()) // Converter + Handler
                             .serviceUnder("/docs", docService)
                             .build();
     }
