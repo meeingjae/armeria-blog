@@ -37,5 +37,4 @@ public class BlogPostConverter implements RequestConverterFunction {
         }
         return value.textValue();
     }
-
 }
