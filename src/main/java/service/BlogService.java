@@ -1,17 +1,23 @@
 package service;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 import com.linecorp.armeria.common.HttpStatus;
 import com.linecorp.armeria.common.ResponseHeaders;
 import com.linecorp.armeria.server.annotation.ConsumesJson;
+import com.linecorp.armeria.server.annotation.Default;
 import com.linecorp.armeria.server.annotation.Description;
 import com.linecorp.armeria.server.annotation.ExceptionHandler;
 import com.linecorp.armeria.server.annotation.Get;
 import com.linecorp.armeria.server.annotation.HttpResult;
+import com.linecorp.armeria.server.annotation.Param;
 import com.linecorp.armeria.server.annotation.Post;
 import com.linecorp.armeria.server.annotation.ProducesJson;
 import com.linecorp.armeria.server.annotation.RequestConverter;
@@ -45,11 +51,15 @@ public class BlogService {
     @ConsumesJson
     @ProducesJson
     @Get("/blogs")
-    public HttpResult<List<BlogPost>> getPostList() {
-        List<BlogPost> list = new ArrayList<>(blogPosts.values());
-        ResponseHeaders headers = ResponseHeaders.builder()
-                                                 .status(HttpStatus.OK)
-                                                 .build();
-        return HttpResult.of(headers, list);
+    public Iterable<BlogPost> getBlogPostList(@Param @Default("true") boolean descending) {
+
+        if (descending) {
+            return blogPosts.entrySet()
+                            .stream()
+                            .sorted(Collections.reverseOrder(Comparator.comparingInt(Entry::getKey)))
+                            .map(Entry::getValue)
+                            .collect(Collectors.toList());
+        }
+        return new ArrayList<>(blogPosts.values());
     }
 }
