@@ -15,6 +15,8 @@ import com.linecorp.armeria.server.annotation.Post;
 import com.linecorp.armeria.server.annotation.RequestConverter;
 import com.linecorp.armeria.server.annotation.ResponseConverter;
 
+import annotations.BlogConsumableType;
+import annotations.BlogProducibleType;
 import dto.BlogPost;
 import dto.BlogPostConverter;
 import dto.BlogPostResponseConverter;
@@ -26,6 +28,8 @@ public class BlogService {
 
     @ExceptionHandler(BlogExceptionHandler.class) // priority = 1: method, 2: class, 3: annotatedService impl
     @Post("/blogs")
+    @BlogConsumableType
+    @BlogProducibleType
     @RequestConverter(BlogPostConverter.class)
     @ResponseConverter(BlogPostResponseConverter.class)
     public BlogPost createBlogPost(BlogPost blogPost) { //RequestConverter
