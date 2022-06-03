@@ -7,11 +7,13 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import com.linecorp.armeria.common.HttpStatus;
 import com.linecorp.armeria.common.ResponseHeaders;
+import com.linecorp.armeria.server.annotation.ConsumesJson;
 import com.linecorp.armeria.server.annotation.Description;
 import com.linecorp.armeria.server.annotation.ExceptionHandler;
 import com.linecorp.armeria.server.annotation.Get;
 import com.linecorp.armeria.server.annotation.HttpResult;
 import com.linecorp.armeria.server.annotation.Post;
+import com.linecorp.armeria.server.annotation.ProducesJson;
 import com.linecorp.armeria.server.annotation.RequestConverter;
 import com.linecorp.armeria.server.annotation.ResponseConverter;
 
@@ -40,6 +42,8 @@ public class BlogService {
         return blogPost; // ResponseConverter
     }
 
+    @ConsumesJson
+    @ProducesJson
     @Get("/blogs")
     public HttpResult<List<BlogPost>> getPostList() {
         List<BlogPost> list = new ArrayList<>(blogPosts.values());
