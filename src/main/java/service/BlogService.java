@@ -3,20 +3,18 @@ package service;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.NoSuchElementException;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
-import com.linecorp.armeria.common.HttpStatus;
-import com.linecorp.armeria.common.ResponseHeaders;
 import com.linecorp.armeria.server.annotation.ConsumesJson;
 import com.linecorp.armeria.server.annotation.Default;
 import com.linecorp.armeria.server.annotation.Description;
 import com.linecorp.armeria.server.annotation.ExceptionHandler;
 import com.linecorp.armeria.server.annotation.Get;
-import com.linecorp.armeria.server.annotation.HttpResult;
+import com.linecorp.armeria.server.annotation.Order;
 import com.linecorp.armeria.server.annotation.Param;
 import com.linecorp.armeria.server.annotation.Post;
 import com.linecorp.armeria.server.annotation.ProducesJson;
@@ -40,6 +38,7 @@ public class BlogService {
     @BlogProducibleType
     @RequestConverter(BlogPostConverter.class)
     @ResponseConverter(BlogPostResponseConverter.class)
+    @Description("create blog post api")
     public BlogPost createBlogPost(BlogPost blogPost) { //RequestConverter
         blogPosts.put(blogPost.getId(), blogPost);
         if (blogPost.getTitle() == null) { // exception handler example
@@ -50,6 +49,7 @@ public class BlogService {
 
     @ConsumesJson
     @ProducesJson
+    @Description("get blog post list")
     @Get("/blogs")
     public Iterable<BlogPost> getBlogPostList(@Param @Default("true") boolean descending) {
 
@@ -61,5 +61,16 @@ public class BlogService {
                             .collect(Collectors.toList());
         }
         return new ArrayList<>(blogPosts.values());
+    }
+
+    @Order(1) // 동일 메소드 우선순위 제공
+    @ExceptionHandler(BlogExceptionHandler.class)
+    @Description("get blog post")
+    @Get("/blogs/:id")
+    public BlogPost getBlogPost(@Param @Default("1") int id) {
+        if (!blogPosts.containsKey(id)) {
+            throw new NoSuchElementException();
+        }
+        return blogPosts.get(id);
     }
 }

@@ -42,7 +42,10 @@ public final class Main {
                                            "createBlogPost",
                                            "{\"title\":\"My first blog\", \"content\":\"Hello Mingble!\"}")
                           .exampleRequests(BlogService.class,
-                                           "getPostList")
+                                           "getBlogPostList")
+                          .examplePaths(BlogService.class,
+                                        "getBlogPost",
+                                        "/blogs/:id")
                           .build();
         return serverBuilder.http(port)
                             .service("/", ((ctx, req) -> HttpResponse.of("Hi Mingble!")))
