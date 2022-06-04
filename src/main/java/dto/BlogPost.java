@@ -1,5 +1,8 @@
 package dto;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import com.linecorp.armeria.server.annotation.Default;
 import com.linecorp.armeria.server.annotation.Param;
 
@@ -17,8 +20,10 @@ public final class BlogPost {
     @Param("modifiedAt")
     private final long modifiedAt;
 
-    public BlogPost(int id, String title, String content) {
-        this(id, title, content, System.currentTimeMillis());
+    @JsonCreator
+    public BlogPost(@JsonProperty("id") int id, @JsonProperty("title") String title,
+                    @JsonProperty("content") String content) {
+        this(id, title, content, System.currentTimeMillis(), System.currentTimeMillis());
     }
 
     public BlogPost(int id, String title, String content, long createdAt) {

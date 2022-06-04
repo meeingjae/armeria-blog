@@ -20,7 +20,7 @@ public class BlogPostConverter implements RequestConverterFunction {
                                            Class<?> expectedResultType,
                                            @Nullable ParameterizedType expectedParameterizedResultType)
             throws Exception {
-        if (expectedResultType == BlogPost.class) {
+        if (isBlogPostType(expectedResultType)) {
             JsonNode jsonNode = mapper.readTree(request.contentUtf8());
             int id = idGenerator.getAndIncrement();
             String title = stringValue(jsonNode, "title");
@@ -36,5 +36,9 @@ public class BlogPostConverter implements RequestConverterFunction {
             throw new IllegalArgumentException(field + " is missing!!");
         }
         return value.textValue();
+    }
+
+    private boolean isBlogPostType(Class<?> exceptedResultType) {
+        return exceptedResultType == BlogPost.class;
     }
 }
