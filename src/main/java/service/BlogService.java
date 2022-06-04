@@ -9,6 +9,7 @@ import java.util.NoSuchElementException;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
+import com.linecorp.armeria.common.HttpResponse;
 import com.linecorp.armeria.server.annotation.ConsumesJson;
 import com.linecorp.armeria.server.annotation.Default;
 import com.linecorp.armeria.server.annotation.Description;
@@ -18,7 +19,9 @@ import com.linecorp.armeria.server.annotation.Order;
 import com.linecorp.armeria.server.annotation.Param;
 import com.linecorp.armeria.server.annotation.Post;
 import com.linecorp.armeria.server.annotation.ProducesJson;
+import com.linecorp.armeria.server.annotation.Put;
 import com.linecorp.armeria.server.annotation.RequestConverter;
+import com.linecorp.armeria.server.annotation.RequestObject;
 import com.linecorp.armeria.server.annotation.ResponseConverter;
 
 import annotations.BlogConsumableType;
@@ -72,5 +75,20 @@ public class BlogService {
             throw new NoSuchElementException();
         }
         return blogPosts.get(id);
+    }
+
+    @BlogConsumableType
+    @BlogProducibleType
+    @ExceptionHandler(BlogExceptionHandler.class)
+    @Put("/blogs/:id")
+    public HttpResponse updateBlogPost(@Param int id, @RequestObject BlogPost blogPost) {
+        BlogPost oldPost = blogPosts.get(id);
+        if (oldPost == null) {
+            throw new NoSuchElementException();
+        }
+        BlogPost newPost = new BlogPost(id, blogPost.getTitle(), blogPost.getContent()
+                , oldPost.getCreatedAt(), System.currentTimeMillis());
+        blogPosts.put(id, newPost);
+        return HttpResponse.ofJson(newPost);
     }
 }

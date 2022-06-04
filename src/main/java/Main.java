@@ -46,6 +46,13 @@ public final class Main {
                           .examplePaths(BlogService.class,
                                         "getBlogPost",
                                         "/blogs/:id")
+                          .examplePaths(BlogService.class,
+                                        "updateBlogPost",
+                                        "/blogs/:id")
+                          .exampleRequests(BlogService.class,
+                                           "updateBlogPost",
+                                           "{\"id\":1,\"title\":\"My first blog123\", \"content\":\"Hello Mingble123!\"}"
+                                           )
                           .build();
         return serverBuilder.http(port)
                             .service("/", ((ctx, req) -> HttpResponse.of("Hi Mingble!")))
