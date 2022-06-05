@@ -10,8 +10,10 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 import com.linecorp.armeria.common.HttpResponse;
+import com.linecorp.armeria.common.HttpStatus;
 import com.linecorp.armeria.server.annotation.ConsumesJson;
 import com.linecorp.armeria.server.annotation.Default;
+import com.linecorp.armeria.server.annotation.Delete;
 import com.linecorp.armeria.server.annotation.Description;
 import com.linecorp.armeria.server.annotation.ExceptionHandler;
 import com.linecorp.armeria.server.annotation.Get;
@@ -29,6 +31,7 @@ import annotations.BlogProducibleType;
 import dto.BlogPost;
 import dto.BlogPostConverter;
 import dto.BlogPostResponseConverter;
+import handler.BlogDeleteExceptionHandler;
 import handler.BlogExceptionHandler;
 
 @Description("Doc Description???")
@@ -90,5 +93,15 @@ public class BlogService {
                 , oldPost.getCreatedAt(), System.currentTimeMillis());
         blogPosts.put(id, newPost);
         return HttpResponse.ofJson(newPost);
+    }
+
+    @ExceptionHandler(BlogDeleteExceptionHandler.class)
+    @Delete("/blogs/:id")
+    public HttpResponse deleteBlogPost(@Param int id) {
+        BlogPost removed = blogPosts.remove(id);
+        if (removed == null) {
+            throw new NoSuchElementException("The blog post does not exist. id:" + id);
+        }
+        return HttpResponse.of(HttpStatus.OK);
     }
 }
