@@ -2,7 +2,7 @@
 ## 목표
 - Blog Post 서비스를 이용한 Armeria Framework 맛보기
 -- --
-##Skills
+## Skills
 * Java 11
 * armeria:1.16.0
 * slf4j (For Logging)
