@@ -36,26 +36,7 @@ public final class Main {
     static Server newServer(int port) {
 
         ServerBuilder serverBuilder = Server.builder();
-        DocService docService =
-                DocService.builder()
-                          .exampleRequests(BlogService.class,
-                                           "createBlogPost",
-                                           "{\"title\":\"My first blog\", \"content\":\"Hello Mingble!\"}")
-                          .exampleRequests(BlogService.class,
-                                           "getBlogPostList")
-                          .examplePaths(BlogService.class,
-                                        "getBlogPost",
-                                        "/blogs/:id")
-                          .examplePaths(BlogService.class,
-                                        "updateBlogPost",
-                                        "/blogs/:id")
-                          .exampleRequests(BlogService.class,
-                                           "updateBlogPost",
-                                           "{\"id\":1,\"title\":\"My first blog123\", \"content\":\"Hello Mingble123!\"}")
-                          .examplePaths(BlogService.class,
-                                        "deleteBlogPost",
-                                        "/blogs/:id")
-                          .build();
+
         return serverBuilder.http(port)
                             .service("/", ((ctx, req) -> HttpResponse.of("Hi Mingble!")))
                             .annotatedService(new BlogService(),
@@ -63,7 +44,29 @@ public final class Main {
                                               new BlogPostConverter(),
                                               new BlogPostResponseConverter(),
                                               new BlogPostAllInOneHandler()) // Converter + Handler
-                            .serviceUnder("/docs", docService)
+                            .serviceUnder("/docs", makeBlogDocService())
                             .build();
+    }
+
+    private static DocService makeBlogDocService() {
+        return DocService.builder()
+                  .exampleRequests(BlogService.class,
+                                   "createBlogPost",
+                                   "{\"title\":\"My first blog\", \"content\":\"Hello Mingble!\"}")
+                  .exampleRequests(BlogService.class,
+                                   "getBlogPostList")
+                  .examplePaths(BlogService.class,
+                                "getBlogPost",
+                                "/blogs/:id")
+                  .examplePaths(BlogService.class,
+                                "updateBlogPost",
+                                "/blogs/:id")
+                  .exampleRequests(BlogService.class,
+                                   "updateBlogPost",
+                                   "{\"id\":1,\"title\":\"My first blog123\", \"content\":\"Hello Mingble123!\"}")
+                  .examplePaths(BlogService.class,
+                                "deleteBlogPost",
+                                "/blogs/:id")
+                  .build();
     }
 }
