@@ -1,4 +1,4 @@
-package handler;
+package armeria.handler;
 
 import java.util.NoSuchElementException;
 

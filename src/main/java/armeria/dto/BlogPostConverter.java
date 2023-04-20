@@ -1,4 +1,4 @@
-package dto;
+package armeria.dto;
 
 import java.lang.reflect.ParameterizedType;
 import java.util.concurrent.atomic.AtomicInteger;

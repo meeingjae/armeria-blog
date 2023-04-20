@@ -1,4 +1,6 @@
-import static docs.ServerDocs.makeBlogDocService;
+package armeria;
+
+import static armeria.docs.ServerDocs.makeBlogDocService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -6,11 +8,11 @@ import org.slf4j.LoggerFactory;
 import com.linecorp.armeria.common.HttpResponse;
 import com.linecorp.armeria.server.Server;
 
-import dto.BlogPostConverter;
-import dto.BlogPostResponseConverter;
-import handler.BlogExceptionHandler;
-import handler.BlogPostAllInOneHandler;
-import service.BlogService;
+import armeria.dto.BlogPostConverter;
+import armeria.dto.BlogPostResponseConverter;
+import armeria.handler.BlogExceptionHandler;
+import armeria.handler.BlogPostAllInOneHandler;
+import armeria.service.BlogService;
 
 public final class Main {
 
@@ -29,7 +31,7 @@ public final class Main {
 
         server.start().join();
 
-        logger.info("Server had been started. Serving dummy service at http://127.0.0.1:{}",
+        logger.info("Server had been started. Serving dummy armeria.service at http://127.0.0.1:{}",
                     server.activeLocalPort());
     }
 

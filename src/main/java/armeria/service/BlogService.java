@@ -1,4 +1,4 @@
-package service;
+package armeria.service;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -26,13 +26,13 @@ import com.linecorp.armeria.server.annotation.RequestConverter;
 import com.linecorp.armeria.server.annotation.RequestObject;
 import com.linecorp.armeria.server.annotation.ResponseConverter;
 
-import annotations.BlogConsumableType;
-import annotations.BlogProducibleType;
-import dto.BlogPost;
-import dto.BlogPostConverter;
-import dto.BlogPostResponseConverter;
-import handler.BlogDeleteExceptionHandler;
-import handler.BlogExceptionHandler;
+import armeria.annotations.BlogConsumableType;
+import armeria.annotations.BlogProducibleType;
+import armeria.dto.BlogPost;
+import armeria.dto.BlogPostConverter;
+import armeria.dto.BlogPostResponseConverter;
+import armeria.handler.BlogDeleteExceptionHandler;
+import armeria.handler.BlogExceptionHandler;
 
 @Description("Doc Description???")
 public class BlogService {
@@ -47,7 +47,7 @@ public class BlogService {
     @Description("create blog post api")
     public BlogPost createBlogPost(BlogPost blogPost) { //RequestConverter
         blogPosts.put(blogPost.getId(), blogPost);
-        if (blogPost.getTitle() == null) { // exception handler example
+        if (blogPost.getTitle() == null) { // exception armeria.handler example
             throw new IllegalArgumentException();
         }
         return blogPost; // ResponseConverter
