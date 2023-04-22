@@ -8,9 +8,15 @@ import com.linecorp.armeria.common.HttpStatus;
 import com.linecorp.armeria.server.ServiceRequestContext;
 import com.linecorp.armeria.server.annotation.ExceptionHandlerFunction;
 
+import io.micrometer.common.lang.NonNull;
+
 public class BlogExceptionHandler implements ExceptionHandlerFunction {
+
+    @NonNull
     @Override
-    public HttpResponse handleException(ServiceRequestContext ctx, HttpRequest req, Throwable cause) {
+    public HttpResponse handleException(@NonNull ServiceRequestContext ctx,
+                                        @NonNull HttpRequest req,
+                                        @NonNull Throwable cause) {
         if (isIllegalArgumentException(cause)) { // IllegalArgumentException return 400(default)
             return HttpResponse.of(HttpStatus.BAD_REQUEST); // but declared for testing
         } else if (isNotFoundException(cause)) {

@@ -20,6 +20,7 @@ import com.linecorp.armeria.server.annotation.RequestConverterFunction;
 import com.linecorp.armeria.server.annotation.ResponseConverterFunction;
 
 import armeria.dto.BlogPost;
+import io.micrometer.common.lang.NonNull;
 
 public class BlogPostAllInOneHandler implements RequestConverterFunction,
                                                 ResponseConverterFunction,
@@ -27,8 +28,11 @@ public class BlogPostAllInOneHandler implements RequestConverterFunction,
     private static final ObjectMapper mapper = new ObjectMapper();
     private AtomicInteger idGenerator = new AtomicInteger();
 
+    @NonNull
     @Override
-    public HttpResponse handleException(ServiceRequestContext ctx, HttpRequest req, Throwable cause) {
+    public HttpResponse handleException(@NonNull ServiceRequestContext ctx,
+                                        @NonNull HttpRequest req,
+                                        @NonNull Throwable cause) {
         if (isIllegalArgumentException(cause)) { // IllegalArgumentException return 400(default)
             return HttpResponse.of(HttpStatus.BAD_REQUEST); // but declared for testing
         }
@@ -36,8 +40,9 @@ public class BlogPostAllInOneHandler implements RequestConverterFunction,
     }
 
     @Override
-    public @Nullable Object convertRequest(ServiceRequestContext ctx, AggregatedHttpRequest request,
-                                           Class<?> expectedResultType,
+    public @Nullable Object convertRequest(@NonNull ServiceRequestContext ctx,
+                                           @NonNull AggregatedHttpRequest request,
+                                           @NonNull Class<?> expectedResultType,
                                            @Nullable ParameterizedType expectedParameterizedResultType)
             throws Exception {
         if (expectedResultType == BlogPost.class) {
@@ -50,13 +55,16 @@ public class BlogPostAllInOneHandler implements RequestConverterFunction,
         return RequestConverterFunction.fallthrough();
     }
 
+    @NonNull
     @Override
-    public HttpResponse convertResponse(ServiceRequestContext ctx, ResponseHeaders headers,
-                                        @Nullable Object result, HttpHeaders trailers) throws Exception {
-        if (result instanceof BlogPost) {
+    public HttpResponse convertResponse(@NonNull ServiceRequestContext ctx,
+                                        @NonNull ResponseHeaders headers,
+                                        @Nullable Object result,
+                                        @NonNull HttpHeaders trailers) throws Exception {
+        if (result instanceof BlogPost blogPost) {
             return HttpResponse.of(HttpStatus.OK,
                                    MediaType.JSON_UTF_8,
-                                   "%S", (mapper.writeValueAsString((BlogPost) result)),
+                                   "%S", (mapper.writeValueAsString(blogPost)),
                                    trailers);
         }
         return ResponseConverterFunction.fallthrough();
