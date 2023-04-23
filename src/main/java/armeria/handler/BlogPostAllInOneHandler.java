@@ -26,7 +26,7 @@ public class BlogPostAllInOneHandler implements RequestConverterFunction,
                                                 ResponseConverterFunction,
                                                 ExceptionHandlerFunction {
     private static final ObjectMapper mapper = new ObjectMapper();
-    private AtomicInteger idGenerator = new AtomicInteger();
+    private final AtomicInteger idGenerator = new AtomicInteger();
 
     @NonNull
     @Override
