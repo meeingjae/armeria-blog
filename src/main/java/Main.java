@@ -3,7 +3,6 @@ import org.slf4j.LoggerFactory;
 
 import com.linecorp.armeria.common.HttpResponse;
 import com.linecorp.armeria.server.Server;
-import com.linecorp.armeria.server.ServerBuilder;
 import com.linecorp.armeria.server.docs.DocService;
 
 import dto.BlogPostConverter;
@@ -35,38 +34,36 @@ public final class Main {
 
     static Server newServer(int port) {
 
-        ServerBuilder serverBuilder = Server.builder();
-
-        return serverBuilder.http(port)
-                            .service("/", ((ctx, req) -> HttpResponse.of("Hi Mingble!")))
-                            .annotatedService(new BlogService(),
-                                              new BlogExceptionHandler(),
-                                              new BlogPostConverter(),
-                                              new BlogPostResponseConverter(),
-                                              new BlogPostAllInOneHandler()) // Converter + Handler
-                            .serviceUnder("/docs", makeBlogDocService())
-                            .build();
+        return Server.builder().http(port)
+                     .service("/", ((ctx, req) -> HttpResponse.of("Hi Mingble!")))
+                     .annotatedService(new BlogService(),
+                                       new BlogExceptionHandler(),
+                                       new BlogPostConverter(),
+                                       new BlogPostResponseConverter(),
+                                       new BlogPostAllInOneHandler()) // Converter + Handler
+                     .serviceUnder("/docs", makeBlogDocService())
+                     .build();
     }
 
     private static DocService makeBlogDocService() {
         return DocService.builder()
-                  .exampleRequests(BlogService.class,
-                                   "createBlogPost",
-                                   "{\"title\":\"My first blog\", \"content\":\"Hello Mingble!\"}")
-                  .exampleRequests(BlogService.class,
-                                   "getBlogPostList")
-                  .examplePaths(BlogService.class,
-                                "getBlogPost",
-                                "/blogs/:id")
-                  .examplePaths(BlogService.class,
-                                "updateBlogPost",
-                                "/blogs/:id")
-                  .exampleRequests(BlogService.class,
-                                   "updateBlogPost",
-                                   "{\"id\":1,\"title\":\"My first blog123\", \"content\":\"Hello Mingble123!\"}")
-                  .examplePaths(BlogService.class,
-                                "deleteBlogPost",
-                                "/blogs/:id")
-                  .build();
+                         .exampleRequests(BlogService.class,
+                                          "createBlogPost",
+                                          "{\"title\":\"My first blog\", \"content\":\"Hello Mingble!\"}")
+                         .exampleRequests(BlogService.class,
+                                          "getBlogPostList")
+                         .examplePaths(BlogService.class,
+                                       "getBlogPost",
+                                       "/blogs/:id")
+                         .examplePaths(BlogService.class,
+                                       "updateBlogPost",
+                                       "/blogs/:id")
+                         .exampleRequests(BlogService.class,
+                                          "updateBlogPost",
+                                          "{\"id\":1,\"title\":\"My first blog123\", \"content\":\"Hello Mingble123!\"}")
+                         .examplePaths(BlogService.class,
+                                       "deleteBlogPost",
+                                       "/blogs/:id")
+                         .build();
     }
 }
