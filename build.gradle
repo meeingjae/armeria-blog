@@ -1,6 +1,5 @@
 apply plugin: 'java'
 apply plugin: 'idea'
-apply plugin: 'eclipse'
 
 repositories {
     mavenCentral()
@@ -10,10 +9,10 @@ dependencies {
     implementation "com.linecorp.armeria:armeria:1.23.1"
 
     // Logging
-    runtimeOnly 'ch.qos.logback:logback-classic:1.2.11'
-    runtimeOnly 'org.slf4j:log4j-over-slf4j:1.7.36'
+    runtimeOnly 'ch.qos.logback:logback-classic'
+    runtimeOnly 'org.slf4j:log4j-over-slf4j'
 }
 
-tasks.withType(JavaCompile) {
+tasks.withType(JavaCompile).configureEach {
     options.compilerArgs += '-parameters'
 }
