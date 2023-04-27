@@ -4,7 +4,7 @@
 -- --
 ## Skills
 * Java 11
-* armeria:1.16.0
+* Armeria:1.23.1
 * slf4j (For Logging)
 -- --
 ## 기능

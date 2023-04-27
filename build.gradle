@@ -7,7 +7,7 @@ repositories {
 }
 
 dependencies {
-    implementation "com.linecorp.armeria:armeria:1.16.0"
+    implementation "com.linecorp.armeria:armeria:1.23.1"
 
     // Logging
     runtimeOnly 'ch.qos.logback:logback-classic:1.2.11'
