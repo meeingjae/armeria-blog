@@ -1,4 +1,4 @@
-package handler;
+package armeria.handler;
 
 import java.lang.reflect.ParameterizedType;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -19,7 +19,7 @@ import com.linecorp.armeria.server.annotation.ExceptionHandlerFunction;
 import com.linecorp.armeria.server.annotation.RequestConverterFunction;
 import com.linecorp.armeria.server.annotation.ResponseConverterFunction;
 
-import dto.BlogPost;
+import armeria.dto.BlogPost;
 
 public class BlogPostAllInOneHandler implements RequestConverterFunction,
                                                 ResponseConverterFunction,

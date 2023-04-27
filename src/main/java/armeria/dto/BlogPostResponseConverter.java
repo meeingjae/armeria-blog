@@ -1,4 +1,4 @@
-package dto;
+package armeria.dto;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
