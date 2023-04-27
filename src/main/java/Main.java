@@ -1,9 +1,10 @@
+import static docs.ServerDocs.makeBlogDocService;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.linecorp.armeria.common.HttpResponse;
 import com.linecorp.armeria.server.Server;
-import com.linecorp.armeria.server.docs.DocService;
 
 import dto.BlogPostConverter;
 import dto.BlogPostResponseConverter;
@@ -43,27 +44,5 @@ public final class Main {
                                        new BlogPostAllInOneHandler()) // Converter + Handler
                      .serviceUnder("/docs", makeBlogDocService())
                      .build();
-    }
-
-    private static DocService makeBlogDocService() {
-        return DocService.builder()
-                         .exampleRequests(BlogService.class,
-                                          "createBlogPost",
-                                          "{\"title\":\"My first blog\", \"content\":\"Hello Mingble!\"}")
-                         .exampleRequests(BlogService.class,
-                                          "getBlogPostList")
-                         .examplePaths(BlogService.class,
-                                       "getBlogPost",
-                                       "/blogs/:id")
-                         .examplePaths(BlogService.class,
-                                       "updateBlogPost",
-                                       "/blogs/:id")
-                         .exampleRequests(BlogService.class,
-                                          "updateBlogPost",
-                                          "{\"id\":1,\"title\":\"My first blog123\", \"content\":\"Hello Mingble123!\"}")
-                         .examplePaths(BlogService.class,
-                                       "deleteBlogPost",
-                                       "/blogs/:id")
-                         .build();
     }
 }
