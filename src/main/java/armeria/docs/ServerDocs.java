@@ -6,6 +6,10 @@ import armeria.service.BlogService;
 
 public class ServerDocs {
 
+    private ServerDocs() {
+        throw new IllegalStateException("this is util class : " + this.getClass());
+    }
+
     private static final String BLOG_ID_URL = "/blogs/:id";
 
     private static final String CREATE_POST_REQ_EXAMPLE =
