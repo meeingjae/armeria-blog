@@ -1,8 +1,8 @@
-package docs;
+package armeria.docs;
 
 import com.linecorp.armeria.server.docs.DocService;
 
-import service.BlogService;
+import armeria.service.BlogService;
 
 public class ServerDocs {
 
